@@ -45,7 +45,7 @@ class NodeManager:
         rtt = self.node.initializeNeighbor(sender)
         print("RTT",rtt)
         for data in datas:
-            address, latency  = gwInfo.split(',')
+            address, latency  = data.split(',')
             self.gatewayTable[address] = latency
         
         print("Gateways", self.gatewayTable)
@@ -83,7 +83,7 @@ class NodeManager:
             if self.node.isParent:
                 self.senseGateways()
                 
-            with open('messages_'+self.node.address,'a') as f:
+            with open('messages_'+self.myAddress,'a') as f:
                 f.write("{0},{1},{2}\n".format(str(self.cnt) ,str(self.sendCount), str(self.receiveCount)))                
             self.sendCount = 0
             self.receiveCount = 0
