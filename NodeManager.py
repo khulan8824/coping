@@ -45,12 +45,12 @@ class NodeManager:
         rtt = self.node.initializeNeighbor(sender)
         print("RTT",rtt)
         for data in datas:
-            address, latency  = data.split(',')
-	    address = address.encode('utf-8')
-            self.gatewayTable[address] = latency
+            address, latency  = data.decode('utf-8').split(',')
+            address = address.encode('utf-8')
+            self.gatewayTable[address] = float(latency)
         
         print("Gateways", self.gatewayTable)
-        self.selected_gateway = max(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
+        self.selected_gateway = min(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
         print("Selected", self.selected_gateway)
         self.sendNeighbors(datas)
         
