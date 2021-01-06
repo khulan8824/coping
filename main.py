@@ -14,11 +14,11 @@ import Node as node
 import NodeManager as manager
 
 address = str(sys.argv[1])
-neighbors = ["10.0.0.2",'10.0.0.3','10.0.0.4']
-gateways = ["10.0.1.1",'10.0.1.2', '10.0.1.3']
+neighbors = []
+gateways = ['10.139.40.85','10.139.40.122','10.138.57.2']
 nd = node.Node(address, True, neighbors)
 
-nm = manager.NodeManager(nd, 120)
+nm = manager.NodeManager(nd, 120, gateways)
 nm.isProxy = False
 
 if reactor.running:
