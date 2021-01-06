@@ -44,16 +44,22 @@ class NodeManager:
     def process(self, datas, sender):
         rtt = self.node.initializeNeighbor(sender)
         print("RTT",rtt)
+        m1 = []
+        m2 = []
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
             address = address.encode('utf-8')
             self.gatewayTable[address] = float(latency)
+            m1.append(float(latency))
+            m2.append(self.pingGateway(address))
         
         print("Gateways", self.gatewayTable)
         self.selected_gateway = min(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
         print("Selected", self.selected_gateway)
         self.sendNeighbors(datas)
-        
+        sim = float(self.cosine_similarity(m1,m2))
+        print("Similarity", sim)
+    
     def senseGateways(self):
         result = ""
         for gw in self.gateways:
@@ -111,6 +117,14 @@ class NodeManager:
             return ""
         else:
             return float(lat)
+        
+    def cosine_similarity(self, x,y):
+        numerator = sum(a*b for a,b in zip(x,y))
+        denominator = self.square_rooted(x)*self.square_rooted(y)
+        if denominator >0:
+            return round(numerator/float(denominator),3)
+        else:
+            return 0
         
     def download(self):
         if self.cnt <400:
