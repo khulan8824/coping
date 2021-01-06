@@ -131,6 +131,7 @@ class NodeManager:
         return round(sqrt(sum([a*a for a in x])),3)
     
     def cosine_similarity(self, x,y):
+        print(x, y)
         numerator = sum(a*b for a,b in zip(x,y))
         denominator = self.square_rooted(x)*self.square_rooted(y)
         if denominator >0:
