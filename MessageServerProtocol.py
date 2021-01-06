@@ -9,7 +9,7 @@ import sys
 from twisted.python import log
 from twisted.internet import reactor, protocol
 from twisted.internet.protocol import ServerFactory, Protocol
-import NeighborManager as neigh
+import NodeManager as neigh
 
 #SERVER SECTION
 class MessageServerProtocol(Protocol):
@@ -18,6 +18,7 @@ class MessageServerProtocol(Protocol):
     
     def dataReceived(self,data):
         connected = self.transport.getPeer().host
+        print("Connected with",connected)
         nlist = data.decode('utf-8').split('#') # received measurements
         self.node.receiveCount += 1
         self.node.process(nlist, connected)

@@ -23,14 +23,15 @@ import MessageClientProtocol as client
 import Node as n
 
 
-class NodeManages:
+class NodeManager:
     
     gatewayTable = {}
-    selectedGateway = ""
+    selected_gateway = ""
     node = None
     gateways = []
     period = 120
     sendCount = 0
+    receiveCount = 0
     cnt = 0
     isProxy = False
     
@@ -48,8 +49,8 @@ class NodeManages:
             self.gatewayTable[address] = latency
         
         print("Gateways", self.gatewayTable)
-        self.selectedGateway = max(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
-        print("Selected", sef.selectedGateway)
+        self.selected_gateway = max(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
+        print("Selected", sef.selected_gateway)
         self.sendNeighbors(datas)
         
     def senseGateways(self):
@@ -64,6 +65,7 @@ class NodeManages:
     
     def sendNeighbors(self, result):
         for n in self.node.neighbors:
+            print("Sending to:", n)
             self.sendCount += 1
             if n == self.node.address:
                 continue
@@ -78,7 +80,7 @@ class NodeManages:
     def mainLoop(self):            
         if self.cnt <20:
             reactor.callLater(self.period, self.mainLoop)
-            if self.node.isParent():
+            if self.node.isParent:
                 self.senseGateways()
                 
             with open('messages_'+self.myAddress,'a') as f:
