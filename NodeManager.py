@@ -46,11 +46,12 @@ class NodeManager:
         print("RTT",rtt)
         for data in datas:
             address, latency  = data.split(',')
+	    address = address.encode('utf-8')
             self.gatewayTable[address] = latency
         
         print("Gateways", self.gatewayTable)
         self.selected_gateway = max(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
-        print("Selected", sef.selected_gateway)
+        print("Selected", self.selected_gateway)
         self.sendNeighbors(datas)
         
     def senseGateways(self):
@@ -83,7 +84,7 @@ class NodeManager:
             if self.node.isParent:
                 self.senseGateways()
                 
-            with open('messages_'+self.myAddress,'a') as f:
+            with open('messages_'+self.node.address,'a') as f:
                 f.write("{0},{1},{2}\n".format(str(self.cnt) ,str(self.sendCount), str(self.receiveCount)))                
             self.sendCount = 0
             self.receiveCount = 0
