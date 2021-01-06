@@ -23,7 +23,7 @@ import MessageClientProtocol as client
 import Node as n
 
 
-class NodeManages:
+class NodeManager:
     
     gatewayTable = {}
     selectedGateway = ""
@@ -31,6 +31,7 @@ class NodeManages:
     gateways = []
     period = 120
     sendCount = 0
+    receiveCount = 0
     cnt = 0
     isProxy = False
     
@@ -78,10 +79,10 @@ class NodeManages:
     def mainLoop(self):            
         if self.cnt <20:
             reactor.callLater(self.period, self.mainLoop)
-            if self.node.isParent():
+            if self.node.isParent:
                 self.senseGateways()
                 
-            with open('messages_'+self.myAddress,'a') as f:
+            with open('messages_'+self.node.address,'a') as f:
                 f.write("{0},{1},{2}\n".format(str(self.cnt) ,str(self.sendCount), str(self.receiveCount)))                
             self.sendCount = 0
             self.receiveCount = 0

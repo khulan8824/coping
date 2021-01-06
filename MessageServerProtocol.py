@@ -9,7 +9,7 @@ import sys
 from twisted.python import log
 from twisted.internet import reactor, protocol
 from twisted.internet.protocol import ServerFactory, Protocol
-import NeighborManager as neigh
+import NodeManager as neigh
 
 #SERVER SECTION
 class MessageServerProtocol(Protocol):
