@@ -29,8 +29,7 @@ factory.protocol = server.MessageServerProtocol
 factory.protocol.node = nm
 reactor.listenTCP(5555, factory)
 
-if nd.isRoot:
-    reactor.callLater(15, nm.mainLoop)
-    reactor.callLater(nm.period, nm.download)
+reactor.callLater(15, nm.mainLoop)
+reactor.callLater(nm.period, nm.download)
 
 reactor.run()
