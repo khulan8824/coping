@@ -46,6 +46,7 @@ class NodeManager:
         print("RTT",rtt)
         m1 = []
         m2 = []
+        print(datas)
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
             address = address.encode('utf-8')
