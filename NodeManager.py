@@ -45,7 +45,6 @@ class NodeManager:
     def process(self, datas, sender):
         rtt = self.node.initializeNeighbor(sender)
         rtt_seconds=(float(rtt)/1000)%60
-        print('RTT', rtt, rtt_seconds)
         m1 = []
         m2 = []
         for data in datas:
@@ -58,8 +57,13 @@ class NodeManager:
         print("Gateways", self.gatewayTable)
         self.selected_gateway = min(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
         print("Selected", self.selected_gateway)
+        
+        with open('selected_'+self.node.address,'a') as f:
+            f.write("{0},{1}\n".format(self.cnt,str(self.selected_gateway)))
         self.sendNeighbors(datas)
         sim = float(self.cosine_similarity(m1,m2))
+        with open('sim_'+self.node.address,'a') as f:
+            f.write("{0},{1}\n".format(self.cnt,str(sim)))
         print("Similarity", sim)
     
     def senseGateways(self):
