@@ -118,7 +118,9 @@ class NodeManager:
             return ""
         else:
             return float(lat)
-        
+    def square_rooted(self, x): 
+        return round(sqrt(sum([a*a for a in x])),3)
+    
     def cosine_similarity(self, x,y):
         numerator = sum(a*b for a,b in zip(x,y))
         denominator = self.square_rooted(x)*self.square_rooted(y)
