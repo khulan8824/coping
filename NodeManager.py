@@ -44,13 +44,14 @@ class NodeManager:
     
     def process(self, datas, sender):
         rtt = self.node.initializeNeighbor(sender)
-        print("RTT",rtt)
+        rtt_seconds=(float(rtt)/1000)%60
+        print('RTT', rtt, rtt_seconds)
         m1 = []
         m2 = []
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
             address = address.encode('utf-8')
-            self.gatewayTable[address] = float(latency)
+            self.gatewayTable[address] = (float(latency)+rtt_seconds)
             m1.append(float(latency))
             m2.append(self.pingGateway(address))
         
