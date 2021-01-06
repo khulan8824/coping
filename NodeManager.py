@@ -26,7 +26,7 @@ import Node as n
 class NodeManager:
     
     gatewayTable = {}
-    selectedGateway = ""
+    selected_gateway = ""
     node = None
     gateways = []
     period = 120
@@ -49,8 +49,8 @@ class NodeManager:
             self.gatewayTable[address] = latency
         
         print("Gateways", self.gatewayTable)
-        self.selectedGateway = max(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
-        print("Selected", sef.selectedGateway)
+        self.selected_gateway = max(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
+        print("Selected", sef.selected_gateway)
         self.sendNeighbors(datas)
         
     def senseGateways(self):
@@ -65,6 +65,7 @@ class NodeManager:
     
     def sendNeighbors(self, result):
         for n in self.node.neighbors:
+            print("Sending to:", n)
             self.sendCount += 1
             if n == self.node.address:
                 continue

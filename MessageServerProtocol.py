@@ -18,6 +18,7 @@ class MessageServerProtocol(Protocol):
     
     def dataReceived(self,data):
         connected = self.transport.getPeer().host
+        print("Connected with",connected)
         nlist = data.decode('utf-8').split('#') # received measurements
         self.node.receiveCount += 1
         self.node.process(nlist, connected)
