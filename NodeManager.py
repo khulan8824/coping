@@ -34,6 +34,7 @@ class NodeManager:
     receiveCount = 0
     cnt = 0
     isProxy = False
+    totalRound = 20
     
     def __init__(self, node, period, gateways):
         self.node = node
@@ -46,7 +47,6 @@ class NodeManager:
         print("RTT",rtt)
         m1 = []
         m2 = []
-        print(datas)
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
             address = address.encode('utf-8')
@@ -86,7 +86,7 @@ class NodeManager:
                 reactor.run()
                 
     def mainLoop(self):            
-        if self.cnt <20:
+        if self.cnt <self.totalRound:
             reactor.callLater(self.period, self.mainLoop)
             if self.node.isParent:
                 self.senseGateways()
@@ -148,6 +148,6 @@ class NodeManager:
         if int(code) != 200:
             return
         else:
-            with open('download_'+self.myAddress,'a') as f:
+            with open('download_'+self.node.address,'a') as f:
                 f.write("{0},{1}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(lat.encode('ascii', 'ignore'))))
         
