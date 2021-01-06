@@ -20,7 +20,6 @@ class MessageClientProtocol(Protocol):
     mode = "client"
     
     def connectionMade(self):
-        print(self.text)
         self.transport.write(self.text.encode())
         self.transport.loseConnection()
             

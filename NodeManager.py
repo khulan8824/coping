@@ -47,12 +47,16 @@ class NodeManager:
         rtt_seconds=(float(rtt)/1000)%60
         m1 = []
         m2 = []
+        text = ""
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
             address = address.encode('utf-8')
             self.gatewayTable[address] = (float(latency)+rtt_seconds)
             m1.append(float(latency))
             m2.append(self.pingGateway(address))
+            if text != "":
+                text +="#"
+            text +=address+","+str(latency)
         
         print("Gateways", self.gatewayTable)
         self.selected_gateway = min(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
@@ -60,7 +64,7 @@ class NodeManager:
         
         with open('selected_'+self.node.address,'a') as f:
             f.write("{0},{1}\n".format(self.cnt,str(self.selected_gateway)))
-        self.sendNeighbors(datas)
+        self.sendNeighbors(text)
         sim = float(self.cosine_similarity(m1,m2))
         with open('sim_'+self.node.address,'a') as f:
             f.write("{0},{1}\n".format(self.cnt,str(sim)))
