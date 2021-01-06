@@ -15,8 +15,8 @@ class Node:
         self.address = address
         self.isParent = isParent
         for n in neighbors:
-            temp = self.initialiazeNeighbor(address)
-            neighbors[n] = temp
+            temp = self.initializeNeighbor(address)
+            self.neighbors[n] = temp
     
     
     ''' Try to assign the neighbors appropriate rtt values by pinging'''
