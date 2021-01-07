@@ -50,7 +50,7 @@ class NodeManager:
         text = ""
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
-            #address = address.encode('utf-8')
+            address = address.encode('utf-8')
             self.gatewayTable[address] = (float(latency)+rtt_seconds)
             m1.append(float(latency))
             ping_rtt = self.pingGateway(address)
@@ -120,13 +120,12 @@ class NodeManager:
             cmd='''curl -x '''+self.selected_gateway+''':3128 -U david.pinilla:"|Jn 5DJ\\7inbNniK|m@^ja&>C" -m 180 -w %{time_total},%{http_code} http://ovh.net/files/1Mb.dat -o /dev/null -s'''
         else:
             cmd='''curl http://'''+self.selected_gateway+''':8080/1Mb.dat -m 180 -w %{time_total},%{http_code} -o /dev/null -s'''
-            
         command = Popen(shlex.split(cmd),stdout=PIPE, stderr=PIPE)
         stdout, stderr = command.communicate()
         lat, code = stdout.decode("utf-8").split(',')        
         #Checking if gateway is accessible
         if int(code) != 200:
-            return ""
+            return 0.0
         else:
             return float(lat)
     def square_rooted(self, x): 
