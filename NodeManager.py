@@ -50,10 +50,12 @@ class NodeManager:
         text = ""
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
-            address = address.encode('utf-8')
+            #address = address.encode('utf-8')
             self.gatewayTable[address] = (float(latency)+rtt_seconds)
             m1.append(float(latency))
-            m2.append(self.pingGateway(address))
+            ping_rtt = self.pingGateway(address)
+            print('Pinging from process', address, ping_rtt)
+            m2.append(ping_rtt)
             if text != "":
                 text +="#"
             text +=address+","+str(latency)
