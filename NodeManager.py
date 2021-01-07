@@ -137,9 +137,9 @@ class NodeManager:
         if self.ping(address) == 0:
             self.black_list.append(address)
         if self.isProxy:
-            cmd='''curl -x '''+self.selected_gateway+''':3128 -U david.pinilla:"|Jn 5DJ\\7inbNniK|m@^ja&>C" -m 180 -w %{time_total},%{http_code} http://ovh.net/files/1Mb.dat -o /dev/null -s'''
+            cmd='''curl -x '''+address+''':3128 -U david.pinilla:"|Jn 5DJ\\7inbNniK|m@^ja&>C" -m 180 -w %{time_total},%{http_code} http://ovh.net/files/1Mb.dat -o /dev/null -s'''
         else:
-            cmd='''curl http://'''+self.selected_gateway+''':8080/1Mb.dat -m 180 -w %{time_total},%{http_code} -o /dev/null -s'''
+            cmd='''curl http://'''+address+''':8080/1Mb.dat -m 180 -w %{time_total},%{http_code} -o /dev/null -s'''
         command = Popen(shlex.split(cmd),stdout=PIPE, stderr=PIPE)
         stdout, stderr = command.communicate()
         lat, code = stdout.decode("utf-8").split(',')        
