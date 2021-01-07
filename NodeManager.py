@@ -126,11 +126,13 @@ class NodeManager:
         lat, code = stdout.decode("utf-8").split(',')        
         #Checking if gateway is accessible
         if int(code) != 200:
-            if int(code) == 0 and self.ping_try <3:
-                print('Error, try pinging again')
-                lat = self.pingGateway(address)
+            if int(code) == 0 and self.ping_try <2:
+                print("Pinging again", cmd)
+                command = Popen(shlex.split(cmd),stdout=PIPE, stderr=PIPE)
+                stdout, stderr = command.communicate()                
+                lat, code = stdout.decode("utf-8").split(',')  
                 self.ping_try +=1
-                return lat
+                return float(lat)
             else:
                 self.ping_try = 0
                 return 0.0
