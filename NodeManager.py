@@ -52,14 +52,15 @@ class NodeManager:
         for data in datas:
             address, latency  = data.decode('utf-8').split(',')
             address = address.encode('utf-8')
-            self.gatewayTable[address] = (float(latency)+rtt_seconds)
-            m1.append(float(latency))
+            self.gatewayTable[address] = (float(latency)+rtt_seconds)            
             ping_rtt = self.pingGateway(address)
-            print('Pinging from process', address, ping_rtt)
+            if ping_rtt == 400:
+                continue            
+            m1.append(float(latency))
             m2.append(ping_rtt)
             if text != "":
                 text +="#"
-            text +=address+","+str(latency)
+            text +=address+","+str(float(latency)+rtt_seconds)
         
         print("Gateways", self.gatewayTable)
         self.selected_gateway = min(self.gatewayTable.iteritems(), key=operator.itemgetter(1))[0] 
@@ -77,6 +78,8 @@ class NodeManager:
         result = ""
         for gw in self.gateways:
             lat = self.pingGateway(gw)
+            if lat == 400:
+                continue
             if lat >0:
                 if result != "":
                     result +="#"
@@ -126,16 +129,18 @@ class NodeManager:
         lat, code = stdout.decode("utf-8").split(',')        
         #Checking if gateway is accessible
         if int(code) != 200:
-            if int(code) == 0 and self.ping_try <2:
+            if int(code) == 0:
                 print("Pinging again", cmd)
                 command = Popen(shlex.split(cmd),stdout=PIPE, stderr=PIPE)
                 stdout, stderr = command.communicate()                
                 lat, code = stdout.decode("utf-8").split(',')  
-                self.ping_try +=1
-                return float(lat)
+                if int(code) == 200:
+                    return float(lat)
+                else:
+                    return 0.0
             else:
                 self.ping_try = 0
-                return 0.0
+                return 400
         else:
             return float(lat)
     def square_rooted(self, x): 
