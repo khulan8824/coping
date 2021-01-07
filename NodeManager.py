@@ -35,6 +35,7 @@ class NodeManager:
     cnt = 0
     isProxy = False
     totalRound = 20
+    ping_try = 0
     
     def __init__(self, node, period, gateways):
         self.node = node
@@ -125,7 +126,14 @@ class NodeManager:
         lat, code = stdout.decode("utf-8").split(',')        
         #Checking if gateway is accessible
         if int(code) != 200:
-            return 0.0
+            if int(code) == 0 and self.ping_try <3:
+                print('Error, try pinging again')
+                lat = self.pingGateway(address)
+                self.ping_try +=1
+                return lat
+            else:
+                self.ping_try = 0
+                return 0.0
         else:
             return float(lat)
     def square_rooted(self, x): 
