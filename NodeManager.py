@@ -36,6 +36,7 @@ class NodeManager:
     isProxy = False
     totalRound = 20
     ping_try = 0
+    black_list = []
     
     def __init__(self, node, period, gateways):
         self.node = node
@@ -77,6 +78,9 @@ class NodeManager:
     def senseGateways(self):
         result = ""
         for gw in self.gateways:
+            if gw in self.black_list:
+                continue
+                
             lat = self.pingGateway(gw)
             if lat == 400:
                 continue
@@ -116,10 +120,22 @@ class NodeManager:
             print("END")
             sys.exit(0)
         
+    def ping(self, address):
+        cmd='ping -w 5 -c 3 -q '+address
+        command = Popen(shlex.split(cmd),stdout=PIPE, stderr=PIPE)
+        stdout, stderr = command.communicate()
+        stdout = str(stdout)
+        if '/' not in stdout:
+            return 0
+        else:
+            return float(stdout.split('/')[-3])
         
     def pingGateway(self,address):
         status = True
         cmd = ""
+        
+        if self.ping(address) == 0:
+            self.black_list.append(address)
         if self.isProxy:
             cmd='''curl -x '''+self.selected_gateway+''':3128 -U david.pinilla:"|Jn 5DJ\\7inbNniK|m@^ja&>C" -m 180 -w %{time_total},%{http_code} http://ovh.net/files/1Mb.dat -o /dev/null -s'''
         else:
