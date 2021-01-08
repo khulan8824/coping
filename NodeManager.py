@@ -181,7 +181,7 @@ class NodeManager:
         status = True
         cmd = ""
         if self.isProxy:
-            cmd='''curl -x '''+self.selected_gateway+''':3128 -U david.pinilla:"|Jn 5DJ\\7inbNniK|m@^ja&>C" -m 180 -w %{time_total},%{http_code} http://ovh.net/files/10Mb.dat -o /dev/null -s'''
+            cmd='''curl -x '''+self.selected_gateway+''':3128 -U david.pinilla:"|Jn 5DJ\\7inbNniK|m@^ja&>C" -m 180 -w %{time_total},%{http_code} http://ovh.net/files/1Mb.dat -o /dev/null -s'''
         else:
             cmd='''curl http://'''+self.selected_gateway+''':8080/10Mb.dat -m 180 -w %{time_total},%{http_code} -o /dev/null -s'''
         command = Popen(shlex.split(cmd),stdout=PIPE, stderr=PIPE)
