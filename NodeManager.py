@@ -175,7 +175,10 @@ class NodeManager:
         result = {}
         for gw in self.gateways:
             result[gw] = self.pingGateway(gw)
-        self.selected_gateway = min(result.iteritems(), key=operator.itemgetter(1))[0] 
+        self.selected_gateway = min(result.iteritems(), key=operator.itemgetter(1))[0]
+        with open('selected_'+self.node.address,'a') as f:
+                f.write("{0},{1}\n".format(str(self.cnt),  str(self.selected_gateway)))   
+        
         
     def download(self):
         if self.cnt <400:
