@@ -171,10 +171,18 @@ class NodeManager:
         else:
             return 0
         
+    def senseManual(self):
+        result = {}
+        for gw in self.gateways:
+            result[gw] = self.pingGateway(gw)
+        self.selected_gateway = min(result.iteritems(), key=operator.itemgetter(1))[0] 
+        
     def download(self):
         if self.cnt <400:
             reactor.callLater(60, self.download)
             self.downloadContent()
+        else:
+            sys.exit()
         
     def downloadContent(self):
         ##########Downloading with power of 2 choices################
