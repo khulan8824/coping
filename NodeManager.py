@@ -57,8 +57,12 @@ class NodeManager:
             ping_rtt = self.pingGateway(address)
             if ping_rtt == 400:
                 continue            
-            m1.append(float(latency))
+            m1.append(float(latency+rtt_seconds))
             m2.append(ping_rtt)
+            
+            if address == "10.138.57.2":
+                with open('monitored_gateway_'+self.node.address,'a') as f:
+                    f.write("{0},{1},{2}\n".format(self.cnt,str(float(latency+rtt_seconds)),str(ping_rtt)))
             if text != "":
                 text +="#"
             text +=address+","+str(float(latency)+rtt_seconds)
@@ -74,6 +78,7 @@ class NodeManager:
         with open('sim_'+self.node.address,'a') as f:
             f.write("{0},{1}\n".format(self.cnt,str(sim)))
         print("Similarity", sim)
+        
     
     def senseGateways(self):
         result = ""
